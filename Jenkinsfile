@@ -10,7 +10,7 @@ pipeline {
                 echo 'Building..'
                 sh "sbt -Dsbt.global.base=.sbt -Dsbt.boot.directory=.sbt -Dsbt.ivy.home=.ivy2 assembly"
                 sh "ls"
-                sh "cd target/scala-2.11"
+                sh "cd target
                 sh "ls"
             }
         }
