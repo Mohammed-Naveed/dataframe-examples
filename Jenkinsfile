@@ -1,22 +1,19 @@
-pipeline {
-    agent any
-  environment {
-      SBT_HOME = tool name: 'sbt-0.13.15', type: 'org.jvnet.hudson.plugins.SbtPluginBuilder$SbtInstallation'
-      PATH = "${env.SBT_HOME}/bin:${env.PATH}"
-    }
-
-    stages {
-        stage('Build') {
-            steps {
-                echo "Compiling..."
-                sh "wget https://github.com/sbt/sbt/releases/download/v0.13.15/sbt-0.13.15.tgz"
-                sh "tar xf sbt-0.13.15.tgz"
-                sh "sudo mv sbt /opt"
-                sh "export PATH=$PATH:/opt/sbt/bin"
-                sh "whereis sbt"
-                sh "ls"
-                sh "sbt assembly"
-            }
-        }
-    }
+node {
+   stage('Git') {
+      git 'https://github.com/muuki88/activator-play-cluster-sample.git'
+   }
+   stage('Build') {
+       def builds = [:]
+       builds['scala'] = {
+           // assumes you have the sbt plugin installed and created an sbt installation named 'sbt-0.13.13'
+           sh "${tool name: 'sbt-0.13.13', type: 'org.jvnet.hudson.plugins.SbtPluginBuilder$SbtInstallation'}/bin/sbt compile test"
+       }
+       builds['frontend'] = {
+           echo 'building the frontend'
+       }
+     parallel builds
+   }
+   stage('Results') {
+      junit '**/target/test-reports/*.xml'
+   }
 }
