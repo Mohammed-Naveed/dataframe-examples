@@ -1,6 +1,6 @@
 node {
    stage('Git') {
-      git 'https://github.com/muuki88/activator-play-cluster-sample.git'
+      git 'https://github.com/Mohammed-Naveed/dataframe-examples.git'
    }
    stage('Build') {
        def builds = [:]
