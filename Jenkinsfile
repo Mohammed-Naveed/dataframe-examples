@@ -8,7 +8,7 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Building..'
-                sh "sbt -Dsbt.global.base=.sbt -Dsbt.boot.directory=.sbt -Dsbt.ivy.home=.ivy2 clean test"
+                sh "sbt -Dsbt.global.base=.sbt -Dsbt.boot.directory=.sbt -Dsbt.ivy.home=.ivy2 package"
             }
         }
     } 
