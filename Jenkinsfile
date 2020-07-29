@@ -1,15 +1,12 @@
 pipeline {
-    agent any
-    
-    stages {
-        stage('Test') {
-            steps {
-                echo 'Building..'
-                sh "wget https://github.com/sbt/sbt/releases/download/v0.13.15/sbt-0.13.15.tgz"
-                sh "tar xf sbt-0.13.15.tgz"
-                sh "cd /var/jenkins_home/jobs/sample-maven-job/workspace@tmp/"
-                sh "sbt assembly"
-            }
-        }
-    } 
+    agent{
+    node {
+  def sbtHome = tool 'sbt-0.13.15'
+  def sbt = "${sbtHome}/bin/sbt -no-colors -batch"
+  stage('build') {
+    sh "${sbt} clean assembly"
+  }
+    }
+
+    }
 }
