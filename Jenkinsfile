@@ -8,7 +8,7 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Building..'
-                sh "sbt test"
+                sh "sbt assembly"
             }
         }
     } 
