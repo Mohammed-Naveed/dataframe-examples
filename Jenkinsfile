@@ -5,7 +5,12 @@ pipeline {
         stage('Build') {
             steps {
                 echo "Compiling..."
-                sh "${tool name: 'sbt', type: 'org.jvnet.hudson.plugins.SbtPluginBuilder$SbtInstallation'}/usr/local/bin/sbt compile"
+                sh "wget https://github.com/sbt/sbt/releases/download/v0.13.15/sbt-0.13.15.tgz"
+                sh "tar xf sbt-0.13.15.tgz"
+                sh "sudo mv sbt /opt"
+                sh "export PATH=$PATH:/opt/sbt/bin"
+                sh "whereis sbt"
+                sh "ls"
             }
         }
     }
