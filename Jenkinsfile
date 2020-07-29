@@ -1,18 +1,27 @@
 pipeline {
-    agent any
-
-    stages {
-        stage('Build') {
-            steps {
-                echo "Compiling..."
-                sh "wget https://github.com/sbt/sbt/releases/download/v0.13.15/sbt-0.13.15.tgz"
-                sh "tar xf sbt-0.13.15.tgz"
-                sh "sudo mv sbt /opt"
-                sh "export PATH=$PATH:/opt/sbt/bin"
-                sh "whereis sbt"
-                sh "ls"
-             
-            }
+  agent any
+  stages {
+    stage('init') {
+      steps {
+        script {
+         def sbtHome = tool 'sbt-0.13.15'
+         env.sbt= "${sbtHome}/bin/sbt -no-colors -batch"
+        }
+      }
+    }
+    stage('Build') {
+        steps {
+          sh "${sbt} 'set test in assembly := {}' assembly"
+          archive includes: 'target/scala-*/toto.jar'
         }
     }
+    stage('Test') {
+        when { branch 'master' }
+        agent { docker 'openjdk:7-jre' }
+        steps {
+          echo 'Hello, JDK'
+          sh 'java -version'
+        }
+    }
+  }
 }
