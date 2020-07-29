@@ -1,15 +1,12 @@
 pipeline {
     agent any
-     
-    
+
     stages {
-        stage('Test') {
+        stage('Build') {
             steps {
-                echo 'Building..'
-               // sh "wget https://github.com/sbt/sbt/releases/download/v0.13.15/sbt-0.13.15.tgz"
-                sh "whereis sbt"
-                sh "sbt assembly"
+                echo "Compiling..."
+                sh "${tool name: 'sbt', type: 'org.jvnet.hudson.plugins.SbtPluginBuilder$SbtInstallation'}/usr/local/bin/sbt compile"
             }
         }
-    } 
+    }
 }
