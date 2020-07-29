@@ -2,19 +2,13 @@ pipeline {
     agent any
     
     stages {
-        stage('init') {
-      steps {
-        script {
-         def sbtHome = tool 'sbt-0.13.15'
-         env.sbt= "${sbtHome}/bin/sbt -no-colors -batch"
+        stage('Test') {
+            steps {
+                echo 'Building..'
+                sh "wget https://github.com/sbt/sbt/releases/download/v0.13.15/sbt-0.13.15.tgz"
+                
+                sh "sbt assembly"
+            }
         }
-      }
-    }
-    stage('Build') {
-        steps {
-          sh "${sbt} 'set test in assembly := {}' assembly"
-          archive includes: 'target/scala-*/toto.jar'
-        }
-    }
     } 
 }
