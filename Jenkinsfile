@@ -11,7 +11,7 @@ pipeline {
                 sh "export PATH=$PATH:/opt/sbt/bin"
                 sh "whereis sbt"
                 sh "ls"
-                sh "sbt assembly"
+             
             }
         }
     }
