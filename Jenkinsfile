@@ -7,6 +7,7 @@ pipeline {
                 echo 'Building..'
                 sh "wget https://github.com/sbt/sbt/releases/download/v0.13.15/sbt-0.13.15.tgz"
                 sh "tar xf sbt-0.13.15.tgz"
+                sh "export PATH=$PATH:/var/jenkins_home/jobs/"
                 sh "sbt assembly"
             }
         }
